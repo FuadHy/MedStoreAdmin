@@ -117,13 +117,13 @@ class Sidebar extends React.Component {
 					</button>
 					{/* Brand */}
 					{logo ? (
-						<NavbarBrand className="pt-0" {...navbarBrandProps}>
-							<img alt={logo.imgAlt} className="navbar-brand-img" src={logo.imgSrc.default} />
-							<h1>MedStore.et</h1>
+						<NavbarBrand className="pt-0" {...navbarBrandProps} style={{width:'100%', marginBottom:'40%', transform:'scale(1.1)', marginTop:'10%'}}>
+							<img alt={logo.imgAlt} className="navbar-brand-img" style={{width:'100%', height:'40%', objectFit:'contain'}} src={logo.imgSrc.default} />
+							<h2>MedStore.et</h2>
 						</NavbarBrand>
 					) : null}
 					{/* User */}
-					<Nav className="align-items-center d-md-none">
+					<Nav className="align-items-center d-md-none" style={{marginTop:'110%'}}>
 						<UncontrolledDropdown nav>
 							<DropdownToggle nav className="nav-link-icon">
 								<i className="ni ni-bell-55" />

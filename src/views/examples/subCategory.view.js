@@ -162,7 +162,7 @@ class SubCategory extends React.Component {
 							size="sm"
 							style={{ marginLeft: 16 }}
 							onClick={param => {
-								this.setState({ isAdd: false, selectedSubCategory: params.data })
+								this.setState({ isAdd: false, selectedSubCategory: params.row })
 								this.toggleModal()
 							}}>
 							<span className="material-icons">create</span>
@@ -186,7 +186,7 @@ class SubCategory extends React.Component {
 				</Row>
 
 				<Card className="mx-4">
-					<div style={{ height: '75vh' }}>
+					<div style={{ height: '75vh', paddingBottom: '40px' }}>
 						<DataGrid
 							// onRowSelected={(row) => this.handelRowClick(row)}
 							rows={this.state.subCategories}

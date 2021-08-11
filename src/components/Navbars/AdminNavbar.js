@@ -46,7 +46,7 @@ class AdminNavbar extends React.Component {
 											<img alt="..." src={require('assets/img/theme/Cherinet.jpg').default} />
 										</span>
 										<Media className="ml-2 d-none d-lg-block">
-											<span className="mb-0 text-sm font-weight-bold">Cherinet</span>
+											<span className="mb-0 text-sm font-weight-bold" style={{color: '#000'}}>Cherinet</span>
 										</Media>
 									</Media>
 								</DropdownToggle>

@@ -63,6 +63,7 @@ class Category extends React.Component {
 
 	handelDelete(e) {
 		e.preventDefault()
+		console.log(this.selectedCategory)
 		axiosInst.delete(`${SERVER_URL}${API_URL}/category/${this.state.selectedCategory._id}`).then(() => {
 			let newCategories = this.state.categories.filter(
 				category => category.id != this.state.selectedCategory._id
@@ -134,7 +135,7 @@ class Category extends React.Component {
 							size="sm"
 							style={{ marginLeft: 16 }}
 							onClick={param => {
-								this.setState({ isAdd: false, selectedCategory: params.data })
+								this.setState({ isAdd: false, selectedCategory: params.row })
 								this.toggleModal()
 							}}>
 							<span className="material-icons">create</span>

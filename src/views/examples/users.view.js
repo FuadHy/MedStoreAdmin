@@ -55,6 +55,7 @@ class User extends React.Component {
 
 	async componentDidMount() {
 		let users = (await axiosInst.get(`${SERVER_URL}${API_URL}/user`)).data.data
+		console.log(users)
 		users.forEach(user => {
 			user.id = user._id
 			delete user._id
@@ -66,7 +67,7 @@ class User extends React.Component {
 
 	handelDelete(e) {
 		e.preventDefault()
-		axiosInst.delete(`${SERVER_URL}${API_URL}/user/${this.state.selectedUser._id}`).then(res => {
+		axiosInst.delete(`${SERVER_URL}${API_URL}/user/${this.state.selectedUser.id}`).then(res => {
 			res.data.data['id'] = res.data.data['_id']
 			let users = this.state.users
 			users.splice(users.indexOf(users.find(users => users.id === res.data.data['id'])), 1)
@@ -80,7 +81,8 @@ class User extends React.Component {
 		const newData = {
 			name: formValues['userName'],
 			email: formValues['userEmail'],
-			password: 'medstore1234',
+			password: formValues['userPass'],
+			passwordConfirm: formValues['userPass'],
 			phone: formValues['userPhone'],
 			city: formValues['userAddressCity'],
 			region: formValues['userAddressRegion'],
@@ -89,18 +91,18 @@ class User extends React.Component {
 			role: formValues['userRole'],
 			avatar_url: this.state.newUserImgURL ? this.state.newUserImgURL : '',
 		}
+		console.log(newData)
 		if (eventType === 'add') {
-			axiosInst.post(`${SERVER_URL}${API_URL}/user`, { user: newData }).then(res => {
-				res.data.data['id'] = res.data.data['_id']
+			axiosInst.post(`${SERVER_URL}${API_URL}/user/signup`, newData).then(res => {
+				console.log(res)
+				res.data.data.user['id'] = res.data.data.user['_id']
 				this.setState(prevState => ({
-					users: prevState.users.concat([res.data.data]),
+					users: prevState.users.concat([res.data.data.user]),
 				}))
 			})
 		} else {
 			axiosInst
-				.put(`${SERVER_URL}${API_URL}/user/${this.state.selectedUser._id}`, {
-					user: newData,
-				})
+				.patch(`${SERVER_URL}${API_URL}/user/${this.state.selectedUser.id}`, newData)
 				.then(res => {
 					res.data.data['id'] = res.data.data['_id']
 					this.setState(prevState => ({
@@ -154,7 +156,7 @@ class User extends React.Component {
 							size="sm"
 							style={{ marginLeft: 16 }}
 							onClick={param => {
-								this.setState({ isAdd: false, selectedUser: params.data })
+								this.setState({ isAdd: false, selectedUser: params.row })
 								this.toggleModal()
 							}}>
 							<span className="material-icons">create</span>
@@ -267,6 +269,20 @@ class User extends React.Component {
 											defaultValue={this.state.selectedUser ? this.state.selectedUser.phone : ''}
 											placeholder="09123213123"
 											type="number"
+										/>
+									</FormGroup>
+								</Col>
+								<Col lg="6">
+									<FormGroup>
+										<label className="form-control-label" htmlFor="userEmail">
+											Password
+										</label>
+										<Input
+											className="form-control-alternative"
+											name="userPass"
+											
+											placeholder="********"
+											type="password"
 										/>
 									</FormGroup>
 								</Col>

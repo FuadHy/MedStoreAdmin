@@ -102,7 +102,7 @@ class Message extends React.Component {
 							size="sm"
 							style={{ marginLeft: 16 }}
 							onClick={param => {
-								this.setState({ selectedMessage: params.data })
+								this.setState({ selectedMessage: params.row })
 								this.toggleModal()
 							}}>
 							<span className="material-icons">create</span>

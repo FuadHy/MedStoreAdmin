@@ -32,7 +32,9 @@ class Products extends Component {
 			subCategories: [],
 			searchQuery: '',
 			newProductImgURL: '',
+			newProductPDFURL: '',
 			newProductPhotoFiles: null,
+			newProductPDF: null,
 			selectedCategorySubCategory: [], // used in Modal subCategory input field
 			uploadingStarted: false,
 			doneUploading: false,
@@ -130,9 +132,11 @@ class Products extends Component {
 				: '',
 			photo_urls:
 				this.state.newProductImgURL.length !== 0 ? this.state.newProductImgURL : undefined,
+			catalogue_url: this.state.newProductPDFURL
 		}
 
 		if (eventType === 'add') {
+			console.log(newData)
 			let product = (await axiosInst.post(`${SERVER_URL}${API_URL}/product`, newData)).data.data
 			console.log(product)
 			product['id'] = product['_id']
@@ -170,6 +174,14 @@ class Products extends Component {
 		})
 	}
 
+	handelPDFAdd(e) {
+		let PDF = e.target.files[0]
+		this.setState({
+			// isAdd: true,
+			newProductPDF: PDF,
+		})
+	}
+
 	handelPhotoUpload(e) {
 		e.preventDefault()
 		this.setState({
@@ -188,6 +200,36 @@ class Products extends Component {
 				let newProductImgURL = res.data.data.join(';')
 				this.setState({
 					newProductImgURL,
+					uploadingStarted: false,
+					doneUploading: true,
+				})
+			})
+			.catch(() => {
+				this.setState({
+					uploadingStarted: true,
+					doneUploading: true,
+				})
+			})
+	}
+
+	handelPDFUpload(e) {
+		e.preventDefault()
+		this.setState({
+			uploadingStarted: true,
+			doneUploading: false,
+		})
+		let formData = new FormData()
+		formData.append('pdf', this.state.newProductPDF)
+		// formData.append("type", "productPhoto");
+		axiosInst
+			.post(`${SERVER_URL}${API_URL}/uploads/pdf`, formData)
+			.then(res => {
+				console.log(res.data)
+				// change the array to ; separated string
+				let newProductPDFURL = res.data.data[0]
+				console.log(newProductPDFURL)
+				this.setState({
+					newProductPDFURL,
 					uploadingStarted: false,
 					doneUploading: true,
 				})
@@ -247,12 +289,12 @@ class Products extends Component {
 							style={{ marginLeft: 16 }}
 							onClick={param => {
 								let subs = this.state.subCategories.filter(
-									sub => sub.category == params.data.category
+									sub => sub.category == params.row.category
 								)
 								subs = subs.map(sub => sub.name)
 								this.setState({
 									isAdd: false,
-									selectedProduct: params.data,
+									selectedProduct: params.row,
 									selectedCategorySubCategory: subs,
 									uploadingStarted: false,
 									doneUploading: false,
@@ -570,6 +612,25 @@ class Products extends Component {
 										</FormGroup>
 									</div>
 									<div className="pl-lg-4">
+									<FormGroup>
+											<label className="form-control-label" htmlFor="productPhotos">
+												Catalogue (PDF file)
+											</label>
+											<Input
+												onChange={e => this.handelPDFAdd(e)}
+												className="form-control-alternative"
+												name="productPDF"
+												type="file"
+												formEncType="multipart/form-data"></Input>
+											<Button
+												size="md"
+												className="mt-2"
+												color="info"
+												onClick={e => this.handelPDFUpload(e)}>
+												Upload
+											</Button>
+											
+										</FormGroup>
 										<FormGroup>
 											<label className="form-control-label" htmlFor="productPhotos">
 												Photos

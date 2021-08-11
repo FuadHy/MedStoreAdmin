@@ -59,11 +59,11 @@ class Request extends React.Component {
 		requests.forEach(request => {
 			let obj = {
 				id: request._id,
-				name: request.user ? request.user.name : request.name,
-				phone: request.user ? request.user.phone : request.phone,
-				email: request.user ? request.user.email : request.email,
-				address: request.user ? request.user.city : request.address,
-				user: request.user ? request.user : null,
+				name: request.User ? request.User.name : request.name,
+				phone: request.User ? request.User.phone : request.phone,
+				email: request.User ? request.User.email : request.email,
+				address: request.User ? request.User.city : request.address,
+				user: request.User ? request.User : null,
 				product: request.Product,
 				productName: request.Product.name,
 				quantity: request.quantity,
@@ -114,7 +114,7 @@ class Request extends React.Component {
 							size="sm"
 							style={{ marginLeft: 16 }}
 							onClick={param => {
-								this.setState({ selectedRequest: params.data })
+								this.setState({ selectedRequest: params.row })
 								this.toggleModal()
 							}}>
 							<span className="material-icons">create</span>
@@ -214,7 +214,7 @@ class Request extends React.Component {
 						<h3>Additional request information</h3>
 						<h4>
 							Request Date:{' '}
-							{this.state.selectedRequest ? this.state.selectedRequest.createdAt : ' '}
+							{this.state.selectedRequest ? this.state.selectedRequest.date : ' '}
 						</h4>
 						<h4>
 							Requested Quantity:{' '}
